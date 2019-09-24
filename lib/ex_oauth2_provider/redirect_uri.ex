@@ -21,7 +21,7 @@ defmodule ExOauth2Provider.RedirectURI do
         case native_redirect_uri?(url, config) do
           true  -> {:ok, url}
           false -> 
-			  Logger.info("do_validate url #{{url}}")
+			  Logger.info("do_validate url #{url}")
 			  do_validate(url, URI.parse(url), config)
         end
     end
