@@ -3,6 +3,7 @@ defmodule ExOauth2Provider.RedirectURI do
   Functions for dealing with redirect uri.
   """
   alias ExOauth2Provider.{Config, Utils}
+  require Logger
 
   @doc """
   Validates if a url can be used as a redirect_uri
@@ -19,7 +20,9 @@ defmodule ExOauth2Provider.RedirectURI do
       url ->
         case native_redirect_uri?(url, config) do
           true  -> {:ok, url}
-          false -> do_validate(url, URI.parse(url), config)
+          false -> 
+			  Logger.info("do_validate url #{{url}}")
+			  do_validate(url, URI.parse(url), config)
         end
     end
   end
@@ -29,6 +32,7 @@ defmodule ExOauth2Provider.RedirectURI do
   
   defp do_validate(_url, %{scheme: schema, host: host}, _config) when is_nil(schema) or is_nil(host),
     do: {:error, "Redirect URI must be an absolute URI"}
+	
   defp do_validate(url, uri, config) do
     if invalid_ssl_uri?(uri, config) do
       {:error, "Redirect URI must be an HTTPS/SSL URI"}
@@ -50,6 +54,7 @@ defmodule ExOauth2Provider.RedirectURI do
   """
   @spec matches?(binary(), binary(), keyword()) :: boolean()
   def matches?(uri, client_uri, config) when is_binary(uri) and is_binary(client_uri) do
+	Logger.info("matches? url: #{inspect(url)} client_url: #{inspect(client_url)}")  
     matches?(URI.parse(uri), URI.parse(client_uri), config)
   end
   @spec matches?(URI.t(), URI.t(), keyword()) :: boolean()
