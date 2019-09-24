@@ -54,7 +54,7 @@ defmodule ExOauth2Provider.RedirectURI do
   """
   @spec matches?(binary(), binary(), keyword()) :: boolean()
   def matches?(uri, client_uri, config) when is_binary(uri) and is_binary(client_uri) do
-	Logger.info("matches? url: #{inspect(url)} client_url: #{inspect(client_url)}")  
+	Logger.info("matches? uri: #{inspect(uri)} client_uri: #{inspect(client_uri)}")  
     matches?(URI.parse(uri), URI.parse(client_uri), config)
   end
   @spec matches?(URI.t(), URI.t(), keyword()) :: boolean()
