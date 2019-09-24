@@ -90,9 +90,11 @@ defmodule ExOauth2Provider.RedirectURI do
   """
   @spec uri_with_query(binary() | URI.t(), map()) :: binary()
   def uri_with_query(uri, query) when is_binary(uri) do
-    uri
-    |> URI.parse()
-    |> uri_with_query(query)
+    u = uri |> URI.parse()
+    
+	query = add_query_params(u.query || "", query)
+	
+	"#{uri}?#{query}"
   end
   def uri_with_query(%URI{} = uri, query) do
     query = add_query_params(uri.query || "", query)
